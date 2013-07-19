@@ -59,7 +59,7 @@ module.exports = BaseView.extend({
       model.save()
       .then(function(){
         _this.collection.add(model);
-        student = new StudentView({model: model, app: _this.app});
+        student = new StudentView({model: model, app: _this.app, parentView: _this});
         $this.find('input').removeClass('error').val('');
         $('#alert').find('button').trigger('click');
         $('#records tbody').append(student.render().$el);

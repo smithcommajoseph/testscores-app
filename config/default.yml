@@ -14,5 +14,5 @@ api:
     host: localhost:3030
     protocol: http
   ts-api:
-    host: localhost:3031
+    host: sheltered-hamlet-5481.herokuapp.com
     protocol: http

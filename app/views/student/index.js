@@ -50,7 +50,8 @@ module.exports = BaseView.extend({
         value = $this.val(),
         updateOb = {},
         _this = this;
-
+        
+    $this.removeClass('editing');
     if (this.model.get(name) == value) return;
 
     this.model.set(name, value);
@@ -60,7 +61,7 @@ module.exports = BaseView.extend({
         _this.reportIsPassing();
         $('#alert').find('button').trigger('click');
         _this.parentView.collection.set(_this.model, {remove: false});
-        $this.removeClass('editing').removeClass('error');
+        $this.removeClass('error');
       });
     } else {
       $this.addClass('error');
