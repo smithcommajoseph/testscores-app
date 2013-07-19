@@ -7,7 +7,8 @@ module.exports = BaseView.extend({
   className: 'home_index_view',
 
   events: {
-    'submit #add-record': 'addRecord'
+    'submit #add-record': 'onAddRecord',
+    'click .close': 'onAlertClose'
   },
 
   postInitialize: function() {
@@ -45,7 +46,7 @@ module.exports = BaseView.extend({
   },
 
   // this dude has gotten too big and should likely be broken up to some other fns
-  addRecord: function(e) {
+  onAddRecord: function(e) {
     e.preventDefault();
     var $this = $(e.currentTarget),
         _this = this,
@@ -73,6 +74,11 @@ module.exports = BaseView.extend({
       $this.find('input').addClass('error');
       $('#alert').show().find('#alert-error').html(model.validationError);
     }
+  },
+
+  onAlertClose: function(e) {
+    $this = $(e.currentTarget);
+    $this.parents('#alert').hide();
   },
 
   convertArrToOb: function(arr) {

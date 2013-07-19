@@ -77,9 +77,7 @@ module.exports = function(grunt) {
       compile: {
         options: {
           dependencies: [
-            'assets/javascripts/vendor/jquery.min.js',
-            'assets/javascripts/vendor/bootstrap.min.js',
-            'assets/javascripts/vendor/json2.js'
+            'assets/javascripts/vendor/*.js'
           ],
           npmDependencies: {
             underscore: '../rendr/node_modules/underscore/underscore.js',

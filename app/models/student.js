@@ -15,15 +15,12 @@ module.exports = Base.extend({
         grade = +props.grade;
 
     if (!_.isNumber(grade)) {
-      console.log(1);
       return 'grade must be a number';
     }
     if (props.grade < 0 || props.grade > 100) {
-      console.log(2);
       return 'invalid grade range, bro';
     }
     if (name.match(/\d/)) {
-      console.log(3);
       return 'it seems you\'ve entered an invalid name';
     }
   }
