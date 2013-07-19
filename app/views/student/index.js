@@ -36,7 +36,7 @@ module.exports = BaseView.extend({
 
   onInputFocus: function(e) {
     var $this = $(e.currentTarget);
-    $this.addClass('editing');
+    $this.addClass('editing').removeClass('error');
   },
 
   onInputKeypress: function(e){
@@ -44,13 +44,14 @@ module.exports = BaseView.extend({
     if (e.which == 13) $this.trigger('blur');
   },
 
+  // this dude has gotten too big and should likely be broken up to some other fns
   onInputBlur: function(e) {
     var $this = $(e.currentTarget),
         name = $this.data('name'),
         value = $this.val(),
         updateOb = {},
         _this = this;
-        
+
     $this.removeClass('editing');
     if (this.model.get(name) == value) return;
 
@@ -61,7 +62,11 @@ module.exports = BaseView.extend({
         _this.reportIsPassing();
         $('#alert').find('button').trigger('click');
         _this.parentView.collection.set(_this.model, {remove: false});
-        $this.removeClass('error');
+      })
+      .fail(function(){
+        $this.addClass('error');
+        //could do some sweet server error parsing here... but alas, i'm cheaping out
+        $('#alert').show().find('#alert-error').html('The server rejected your request');
       });
     } else {
       $this.addClass('error');
