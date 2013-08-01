@@ -52,7 +52,7 @@ function initServer() {
  * Start the Express server.
  */
 function start() {
-  var port = process.env.PORT || config.App.port;
+  var port = process.env.PORT || config.app.port;
   app.listen(port);
   console.log("server pid %s listening on port %s in %s mode",
     process.pid,
