@@ -2,7 +2,7 @@ var BaseView = require('../base');
 
 module.exports = BaseView.extend({
 
-  className: 'student_index_view',
+  className: 'students_index_view',
   tagName: 'tr',
 
   events: {
@@ -91,4 +91,4 @@ module.exports = BaseView.extend({
   }
 
 });
-module.exports.id = 'student/index';
+module.exports.id = 'students/index';

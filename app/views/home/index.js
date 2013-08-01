@@ -1,5 +1,5 @@
 var BaseView = require('../base'),
-    StudentView = require('../student/index'),
+    StudentsView = require('../students/index'),
     _ = require('underscore');
 
 module.exports = BaseView.extend({
@@ -43,7 +43,7 @@ module.exports = BaseView.extend({
     model.save()
     .then(function(){
       _this.collection.add(model);
-      student = new StudentView({model: model, app: _this.app, parentView: _this});
+      student = new StudentsView({model: model, app: _this.app, parentView: _this});
       $this.find('input').removeClass('error').val('');
       _this.app.set('flashMsg', ' ');
       $('#records tbody').append(student.render().$el);
