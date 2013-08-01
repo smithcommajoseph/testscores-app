@@ -1,12 +1,3 @@
-<section class="page-header">
-  <h1>Alright, let's do this! </h1>
-</section>
-
-<div id="alert" class="alert" style="display:none">
-  <button type="button" class="close" data-dismiss="alert">&times;</button>
-  <span id="alert-error"><span>
-</div>
-    
 <form id="add-record" class="form-inline">
   <fieldset>
     <legend>Add a Record</legend>
@@ -28,7 +19,11 @@
           </tr>
         </thead>
         <tbody>
-        {{{students}}}
+          {{#each models}}
+            <tr>
+              {{view "student/index" model_name="Student" model=this}}
+            </tr>
+          {{/each}}
         </tbody>
       </table>
     </section>
@@ -46,9 +41,9 @@
         </thead>
         <tbody>
           <tr>
-            <td id="maxGrade">{{maxGrade}}</td>
-            <td id="minGrade">{{minGrade}}</td>
-            <td id="avgGrade">{{avgGrade}}</td>
+            <td id="maxGrade">{{collection.getMaxGrade}}</td>
+            <td id="minGrade">{{collection.getMinGrade}}</td>
+            <td id="avgGrade">{{collection.getAvgGrade}}</td>
           </tr>
         </tbody>
       </table>

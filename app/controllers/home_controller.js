@@ -5,7 +5,6 @@ module.exports = {
       collection: {collection: 'Students', params: params}
     };
     this.app.fetch(spec, function(err, res) {
-      console.log(arguments);
       callback(err, res);
     });
   }

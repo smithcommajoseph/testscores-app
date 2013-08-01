@@ -7,17 +7,7 @@ module.exports = BaseView.extend({
   className: 'home_index_view',
 
   events: {
-    'submit #add-record': 'onAddRecord',
-    'click .close': 'onAlertClose'
-  },
-
-  postInitialize: function() {
-    if( isServer ) {
-      this.options.students = this.renderStudents();
-      this.options.maxGrade = this.collection.getMaxGrade();
-      this.options.minGrade = this.collection.getMinGrade();
-      this.options.avgGrade = this.collection.getAvgGrade();
-    }
+    'submit #add-record': 'onAddRecord'
   },
 
   postRender: function() {
@@ -34,17 +24,6 @@ module.exports = BaseView.extend({
     $('#avgGrade').html(this.collection.getAvgGrade());
   },
 
-  renderStudents: function() {
-    var _this = this, html = [];
-    if (isServer) {
-      this.collection.models.forEach( function(model) {
-        var student = new StudentView({model: model, app: _this.app});
-        html.push(student.getHtml());
-      });
-    }
-    return html.join('');
-  },
-
   // this dude has gotten too big and should likely be broken up to some other fns
   onAddRecord: function(e) {
     e.preventDefault();
@@ -52,33 +31,35 @@ module.exports = BaseView.extend({
         _this = this,
         resArr = $this.serializeArray(),
         resOb = this.convertArrToOb(resArr),
-        model,
-        student;
+        model = new this.collection.model(resOb, {app: this.app});
 
-    model = new this.collection.model(resOb, {app: this.app});
     if (model.isValid()) {
-      model.save()
-      .then(function(){
-        _this.collection.add(model);
-        student = new StudentView({model: model, app: _this.app, parentView: _this});
-        $this.find('input').removeClass('error').val('');
-        $('#alert').find('button').trigger('click');
-        $('#records tbody').append(student.render().$el);
-      })
-      .fail(function(){
-        $this.find('input').addClass('error');
-        //could do some sweet server error parsing here... but alas, i'm cheaping out
-        $('#alert').show().find('#alert-error').html('The server rejected your request');
-      });
+      this.saveIt($this, model);
     } else {
-      $this.find('input').addClass('error');
-      $('#alert').show().find('#alert-error').html(model.validationError);
+      this.displayError($this, model.validationError);
     }
   },
 
-  onAlertClose: function(e) {
-    $this = $(e.currentTarget);
-    $this.parents('#alert').hide();
+  saveIt: function($this, model) {
+    var _this = this,
+        student;
+
+    model.save()
+    .then(function(){
+      _this.collection.add(model);
+      student = new StudentView({model: model, app: _this.app, parentView: _this});
+      $this.find('input').removeClass('error').val('');
+      _this.app.set('flashMsg', ' ');
+      $('#records tbody').append(student.render().$el);
+    })
+    .fail(function(){
+      _this.displayError.call(_this, $this, 'The server rejected your request');
+    });
+  },
+
+  displayError: function($this, msg) {
+    $this.find('input').addClass('error');
+    this.app.set('flashMsg', msg);
   },
 
   convertArrToOb: function(arr) {

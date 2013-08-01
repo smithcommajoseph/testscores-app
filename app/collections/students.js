@@ -8,10 +8,11 @@ module.exports = Base.extend({
 
   getMaxGrade: function() {
     var retVal = 0,
+        models = !!this.toJSON ? this.toJSON() : this.models,
         grade;
-    if (this.length > 0) {
-      this.models.forEach(function(model){
-        grade = model.get('grade');
+    if (models.length > 0) {
+      models.forEach(function(model){
+        grade = model.grade;
         if (grade > retVal) retVal = grade;
       });
     } else {
@@ -22,10 +23,11 @@ module.exports = Base.extend({
 
   getMinGrade: function() {
     var retVal = 100,
+        models = !!this.toJSON ? this.toJSON() : this.models,
         grade;
-    if (this.length > 0) {
-      this.models.forEach(function(model){
-        grade = model.get('grade');
+    if (models.length > 0) {
+      models.forEach(function(model){
+        grade = model.grade;
         if (grade < retVal) retVal = grade;
       });
     } else {
@@ -36,9 +38,10 @@ module.exports = Base.extend({
 
   getAvgGrade: function() {
     var retVal,
-        nums = this.models.map(function(model){ return model.get('grade'); }),
+        models = !!this.toJSON ? this.toJSON() : this.models,
+        nums = models.map(function(model){ return model.grade; }),
         sum = nums.reduce(function(prev, cur){ return prev + cur; }, 0);
-    retVal = parseInt(sum/this.length, 10) || 0;
+    retVal = parseInt(sum/models.length, 10) || 0;
     return retVal;
   }
 

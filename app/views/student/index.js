@@ -15,12 +15,12 @@ module.exports = BaseView.extend({
   render: function() {
     var html = this.getHtml();
     this.setElement(html);
-    this.reportIsPassing();
+    this._postRender();
     return this;
   },
 
   postRender: function() {
-    this.reportIsPassing(); //occurs on page load only
+    this.reportIsPassing();
   },
 
   onRemoveClick: function(e) {
@@ -44,34 +44,41 @@ module.exports = BaseView.extend({
     if (e.which == 13) $this.trigger('blur');
   },
 
-  // this dude has gotten too big and should likely be broken up to some other fns
   onInputBlur: function(e) {
     var $this = $(e.currentTarget),
         name = $this.data('name'),
         value = $this.val(),
-        updateOb = {},
-        _this = this;
+        updateOb = {};
 
     $this.removeClass('editing');
     if (this.model.get(name) == value) return;
 
     this.model.set(name, value);
     if (this.model.isValid()){
-      this.model.save()
-      .then(function(){
-        _this.reportIsPassing();
-        $('#alert').find('button').trigger('click');
-        _this.parentView.collection.set(_this.model, {remove: false});
-      })
-      .fail(function(){
-        $this.addClass('error');
-        //could do some sweet server error parsing here... but alas, i'm cheaping out
-        $('#alert').show().find('#alert-error').html('The server rejected your request');
-      });
+      this.saveIt($this);
     } else {
-      $this.addClass('error');
-      $('#alert').show().find('#alert-error').html(this.model.validationError);
+      this.displayError($this, this.model.validationError);
     }
+  },
+
+  saveIt: function($this) {
+    var _this = this;
+
+    this.model.save()
+    .then(function(){
+      _this.reportIsPassing();
+      _this.app.set('flashMsg', ' ');
+      _this.parentView.collection.set(_this.model, {remove: false});
+    })
+    .fail(function(){
+      //could do some sweet server error parsing here... but alas, i'm cheaping out
+      _this.displayError.call(_this, $this, 'The server rejected your request');
+    });
+  },
+
+  displayError: function($this, msg) {
+    $this.addClass('error');
+    this.app.set('flashMsg', msg);
   },
 
   isPassing: function(){
@@ -79,10 +86,8 @@ module.exports = BaseView.extend({
   },
 
   reportIsPassing: function() {
-    if(!isServer){
-      if(this.isPassing()) this.$el.removeClass('warning');
-      else this.$el.addClass('warning');
-    }
+    if(this.isPassing()) this.$el.removeClass('warning');
+    else this.$el.addClass('warning');
   }
 
 });
