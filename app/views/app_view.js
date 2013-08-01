@@ -24,9 +24,8 @@ module.exports = BaseAppView.extend({
     $body.toggleClass('loading', loading);
   },
 
-  onFlashMessageChange: function() {
-    var _this = this,
-        flashMsg = this.app.get('flashMsg');
+  onFlashMessageChange: function(app, flashMsg) {
+    var _this = this;
     clearTimeout(this.timeout);
     if (flashMsg == ' ') $alert.find('.close').trigger('click');
     else {
