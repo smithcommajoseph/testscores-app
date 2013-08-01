@@ -11,10 +11,6 @@ module.exports = BaseView.extend({
   },
 
   postRender: function() {
-    this.addEventListeners();
-  },
-
-  addEventListeners: function() {
     this.collection.on('all', this.onCollectionChange.bind(this));
   },
 
