@@ -2,7 +2,7 @@
 
 Rendr is a small library from [Airbnb](https://www.airbnb.com) that allows you to run your [Backbone.js](http://backbonejs.org/) apps seamlessly on both the client and the server. Allow your web server to serve fully-formed HTML pages to any deep link of your app, while preserving the snappy feel of a traditional Backbone.js client-side MVC app.
 
-This repo contains the code examples from my 2013 [Develop Denver](http://www.developdenver.org) Panel.
+This repo contains the code examples from my 2013 [Develop Denver](http://www.developdenver.org) Panel. Slides are located [here](http://www.slideshare.net/technicolorenvy/dvlpdnver2013).
 
 # Getting Started
 
